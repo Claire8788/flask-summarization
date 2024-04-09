@@ -107,7 +107,7 @@ def predict():
         num_words = request.json.get('num_words', 50)
         num_beams = request.json.get('num_beams', 4)
         model = request.json.get('model', 'bart')
-        user_id = data.get('user_id')  # 从请求中获取 user_id
+        username = data.get('username')  # 从请求中获取 username
 
         if not sentence:
             return jsonify({'message': 'Empty input'}), 400
@@ -121,6 +121,14 @@ def predict():
             output = bart_summarize(sentence, num_beams, num_words)
         else:
             output = t5_summarize(sentence, num_beams, num_words)
+        
+
+        # 根据提供的用户名查找对应的用户ID
+        admin_user = Admin.query.filter_by(username=username).first()
+        if admin_user:
+            user_id = admin_user.id
+        else:
+            return jsonify({'message': '未找到用户'}), 404
 
         # 将文本和摘要写入数据库
         # new_summary = UserSummary(text=sentence, summary=output, model=model.lower())

@@ -25,8 +25,11 @@
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm(login)">登录</el-button>
                 </div>
+                <div class="register-btn">
+                    <el-button type="primary" @click="goToRegister">注册</el-button>
+                </div>
                 <el-checkbox class="login-tips" v-model="checked" label="记住密码" size="large" />
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
+                <!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
             </el-form>
         </div>
     </div>
@@ -134,10 +137,19 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     }
 };
 
+// const goToRegister = () => {
+//     router.push('/register'); // 假设注册页面路径为 '/register'
+// };
+const goToRegister = () => {
+    console.log('点击注册按钮'); // 添加日志输出
+    router.push('/register'); // 假设注册页面路径为 '/register'
+};
+
 // 清空标签存储
 const tags = useTagsStore();
 tags.clearTags();
 </script>
+
 
 <style scoped>
 .login-wrap {
@@ -169,6 +181,11 @@ tags.clearTags();
     text-align: center;
 }
 .login-btn button {
+    width: 100%;
+    height: 36px;
+    margin-bottom: 10px;
+}
+.register-btn button {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;

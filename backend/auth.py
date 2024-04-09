@@ -40,13 +40,20 @@ def register():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
+    email = data.get("email")
 
     # 检查用户名是否已存在
     if Admin.query.filter_by(username=username).first():
         return jsonify({'message': '用户名已存在，请选择其他用户名'}), 400
+    
+    # 检查邮箱是否已存在
+    existing_user = Admin.query.filter_by(email=email).first()
+    if existing_user:
+        return jsonify({'message': '该邮箱已被注册，请选择其他邮箱'}), 400
+
 
     # 创建新用户实例并保存到数据库
-    new_user = Admin(username=username, password=password)
+    new_user = Admin(username=username, password=password,email=email)
     db.session.add(new_user)
     db.session.commit()
 

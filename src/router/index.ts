@@ -135,6 +135,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import(/* webpackChunkName: "login" */ '../views/login.vue'),
     },
     {
+        path: '/register',
+        name: 'Register',
+        meta: {
+            title: '注册',
+        },
+        component: () => import(/* webpackChunkName: "register" */ '../views/register.vue'),
+    },
+    {
         path: '/403',
         name: '403',
         meta: {
@@ -149,11 +157,25 @@ const router = createRouter({
     routes,
 });
 
+// router.beforeEach((to, from, next) => {
+//     NProgress.start();
+//     const role = localStorage.getItem('ms_username');
+//     const permiss = usePermissStore();
+//     if (!role && to.path !== '/login') {
+//         next('/login');
+//     } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
+//         // 如果没有权限，则进入403
+//         next('/403');
+//     } else {
+//         next();
+//     }
+// });
+
 router.beforeEach((to, from, next) => {
     NProgress.start();
     const role = localStorage.getItem('ms_username');
     const permiss = usePermissStore();
-    if (!role && to.path !== '/login') {
+    if (!role && to.path !== '/login' && to.path !== '/register') {
         next('/login');
     } else if (to.meta.permiss && !permiss.key.includes(to.meta.permiss)) {
         // 如果没有权限，则进入403
@@ -162,7 +184,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
-
 router.afterEach(() => {
     NProgress.done()
 })

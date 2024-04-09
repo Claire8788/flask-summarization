@@ -1,19 +1,24 @@
 <template>
   <el-form ref="formRef" :model="form" :rules="rules">
     <el-form-item label="ID" prop="id">
-      <el-input v-model="form.id"></el-input>
+      <!-- <el-input v-model="form.id"></el-input> -->
+	  <el-input v-model="form.id" :disabled="true"></el-input>
     </el-form-item>
     <el-form-item label="文本" prop="text">
-      <el-input v-model="form.text" autosize style="max-height: 200px; overflow-y: auto;"></el-input>
+      <!-- <el-input v-model="form.text" autosize style="max-height: 200px; overflow-y: auto;"></el-input> -->
+	  <el-input v-model="form.text" type="textarea" style="height: 300px; max-height: 300px; overflow-y: scroll;" :rows="13" wrap="wrap"></el-input>
     </el-form-item>
     <el-form-item label="摘要" prop="summary">
-      <el-input v-model="form.summary" autosize style="max-height: 200px; overflow-y: auto;"></el-input>
+      <!-- <el-input v-model="form.summary" autosize style="max-height: 200px; overflow-y: auto;"></el-input> -->
+	  <el-input v-model="form.summary" type="textarea" style="height: 200px; max-height: 200px; overflow-y: scroll;" :rows="8" wrap="wrap"></el-input>
     </el-form-item>
     <el-form-item label="模型" prop="model">
-      <el-input v-model="form.model"></el-input>
+      <!-- <el-input v-model="form.model"></el-input> -->
+	  <el-input v-model="form.model" :disabled="true"></el-input>
     </el-form-item>
     <el-form-item label="时间" prop="created_at">
-      <el-input v-model="form.created_at"></el-input>
+      <!-- <el-input v-model="form.created_at"></el-input> -->
+	  <el-input v-model="form.created_at" :disabled="true"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="saveEdit(formRef)">保存</el-button>
