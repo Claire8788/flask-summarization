@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/summary',
                 name: 'summary',
                 meta: {
-                    title: '摘要',
+                    title: '会议摘要',
                     permiss: '1',
                 },
                 component: () => import(/* webpackChunkName: "table" */ '../views/summary.vue'),
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/table',
                 name: 'basetable',
                 meta: {
-                    title: '表格',
+                    title: '会议记录',
                     permiss: '2',
                 },
                 component: () => import(/* webpackChunkName: "table" */ '../views/table.vue'),
@@ -42,6 +42,15 @@ const routes: RouteRecordRaw[] = [
                     permiss: '5',
                 },
                 component: () => import(/* webpackChunkName: "form" */ '../views/form.vue'),
+            },
+            {
+                path: '/admin',
+                name: 'admin',
+                meta: {
+                    title: '用户管理',
+                    permiss: '3',
+                },
+                component: () => import(/* webpackChunkName: "import" */ '../views/admin.vue'),
             },
             // {
             //     path: '/tabs',
@@ -124,6 +133,7 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "import" */ '../views/import.vue'),
             },
+            
         ],
     },
     {

@@ -52,14 +52,61 @@ const rules: FormRules = {
 	name: [{ required: true, message: '用户名', trigger: 'blur' }]
 };
 const formRef = ref<FormInstance>();
-const saveEdit = (formEl: FormInstance | undefined) => {
-	if (!formEl) return;
-	formEl.validate(valid => {
-		if (!valid) return false;
-		props.update(form.value);
-		ElMessage.success('保存成功！');
-	});
+const saveEdit = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+
+    // 验证表单
+    const valid = await formEl.validate();
+    if (!valid) return;
+
+    try {
+        // 发送更新请求到后端
+        const response = await fetch('http://127.0.0.1:5000/api/updateData', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(form.value)
+        });
+
+        if (response.ok) {
+            // 更新成功，调用传入的 update 函数
+            props.update(form.value);
+            ElMessage.success('保存成功！');
+        } else {
+            // 更新失败，显示错误消息
+            const data = await response.json();
+            ElMessage.error(data.message || '保存失败！');
+        }
+    } catch (error) {
+        console.error('Failed to save edit:', error);
+        ElMessage.error('保存失败，请稍后重试！');
+    }
 };
+// const formRef = ref<FormInstance>();
+// const saveEdit = (formEl: FormInstance | undefined) => {
+// 	if (!formEl) return;
+// 	formEl.validate(valid => {
+// 		if (!valid) return false;
+// 		props.update(form.value);
+// 		ElMessage.success('保存成功！');
+// 	});
+// };
+
+// const fetchEditData = async (id) => {
+//     try {
+//         const res = await fetch(`/api/editData?id=${id}`);
+//         if (res.ok) {
+//             const data = await res.json();
+//             form.value = data.data;
+//         } else {
+//             console.error('Failed to fetch edit data:', res.statusText);
+//         }
+//     } catch (error) {
+//         console.error('Failed to fetch edit data:', error);
+//     }
+// };
+
 </script>
 
 

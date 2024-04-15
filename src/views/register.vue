@@ -163,6 +163,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   justify-content: center;
   width: 100%;
   height: 100%;
+  background-image: url(../assets/img/register_bg.jpg);
+  background-size: 100%;
   background-color: #f5f5f5;
 }
 .ms-title {

@@ -27,7 +27,7 @@ def login():
     if username == 'admin' and password == '123':
         return jsonify({'message': '登录成功'})
     # 不是管理员，就去数据库查用户表在数据库中查找用户名和密码是否匹配
-    user = Admin.query.filter_by(username=username, password=password).first()
+    user = Admin.query.filter_by(username=username, password=password,status=1).first()
 
     if user:
         return jsonify({'message': '登录成功'})
@@ -58,3 +58,106 @@ def register():
     db.session.commit()
 
     return jsonify({'message': '注册成功'})
+
+
+
+@auth_blueprint.route('/api/queryUser', methods=['POST'])
+def query_user():
+    data = request.get_json()
+    username = data.get('username')
+    
+    # 如果用户名为空，则返回所有用户信息
+    if not username:
+        users = Admin.query.all()
+        user_list = [{'id':user.id,'username': user.username, 'password': user.password, 'email': user.email, 'created_at': user.created_at, 'status': user.status} for user in users]
+        return jsonify({'message': '查询成功', 'users': user_list})
+    
+    # 否则，根据用户名查询用户信息
+    users = Admin.query.filter(Admin.username.ilike(f'%{username}%')).all()
+
+    if users:
+        user_list = [{'id':user.id,'username': user.username, 'password': user.password, 'email': user.email, 'created_at': user.created_at, 'status': user.status} for user in users]
+        return jsonify({'message': '查询成功', 'users': user_list})
+    else:
+        return jsonify({'message': '未找到相关用户'}), 404
+
+
+
+
+
+
+
+# 编写更新数据的路由处理函数
+@auth_blueprint.route('/api/updateAdmin', methods=['PUT'])
+def update_data():
+    try:
+        # 从请求体中获取更新后的数据
+        data = request.json
+        
+        # 根据数据中的 ID 查询对应的记录
+        Admin_id = data.get('id')
+        admin_info = Admin.query.get(Admin_id)
+        
+        if admin_info:
+            # 更新记录的内容
+            admin_info.password = data.get('password')
+            # summary.summary = data.get('summary')
+            # 其他字段的更新操作...
+
+            # 提交到数据库
+            db.session.commit()
+            
+            return jsonify({'message': '数据更新成功'}), 200
+        else:
+            return jsonify({'message': '未找到对应ID的数据'}), 404
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+# 删除数据
+@auth_blueprint.route('/api/deleteAdmin', methods=['DELETE'])
+def delete_data():
+    try:
+        data = request.get_json()
+        admin_id = data.get('id')
+        # 查询对应ID的数据
+        admin_info = Admin.query.get(admin_id)
+        if admin_info:
+            # 将对应数据的 status 设置为 0
+            admin_info.status = 0
+            db.session.commit()
+            return jsonify({'message': '删除成功'}), 200
+        else:
+            return jsonify({'message': '未找到对应ID的数据'}), 404
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+    
+
+
+
+
+# 在原有的路由下添加新的路由处理函数
+@auth_blueprint.route('/api/updatePassword', methods=['PUT'])
+def update_password():
+    try:
+        # 从请求体中获取用户名和密码信息
+        data = request.get_json()
+        username = data.get('username')
+        old_password = data.get('oldPassword')
+        new_password = data.get('newPassword')
+
+        # 查询对应用户名的用户
+        user = Admin.query.filter_by(username=username).first()
+
+        if user:
+            # 验证旧密码是否正确
+            if user.password == old_password:
+                # 更新密码
+                user.password = new_password
+                db.session.commit()
+                return jsonify({'message': '密码更新成功'}), 200
+            else:
+                return jsonify({'message': '旧密码不正确'}), 400
+        else:
+            return jsonify({'message': '用户不存在'}), 404
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500

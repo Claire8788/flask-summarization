@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div class="sidebar">
         <el-menu
             class="sidebar-el-menu"
@@ -48,6 +48,27 @@
             </template>
         </el-menu>
     </div>
+</template> -->
+<template>
+    <div class="sidebar">
+        <el-menu
+            class="sidebar-el-menu"
+            :default-active="onRoutes"
+            :collapse="sidebar.collapse"
+            background-color="#324157"
+            text-color="#bfcbd9"
+            active-text-color="#20a0ff"
+            unique-opened
+            router
+        >
+            <el-menu-item :index="item.index" v-permiss="item.permiss" v-for="item in items" :key="item.index">
+                <el-icon>
+                    <component :is="item.icon"></component>
+                </el-icon>
+                <template #title>{{ item.title }}</template>
+            </el-menu-item>
+        </el-menu>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -65,29 +86,41 @@ const items = [
         permiss: '1',
     },
 
-    {
+    // {
         
+    //     icon: 'Calendar',
+    //     index: '1',
+    //     title: '表格相关',
+    //     permiss: '2',
+    //     subs: [
+    //         {
+    //             index: '/table',
+    //             title: '常用表格',
+    //             permiss: '2',
+    //         },
+    //         {
+    //             index: '/import',
+    //             title: '导入Excel',
+    //             permiss: '2',
+    //         },
+    //         {
+    //             index: '/export',
+    //             title: '导出Excel',
+    //             permiss: '2',
+    //         },
+    //     ],
+    // },
+    {
         icon: 'Calendar',
-        index: '1',
-        title: '表格相关',
+        index: '/table',
+        title: '会议记录',
         permiss: '2',
-        subs: [
-            {
-                index: '/table',
-                title: '常用表格',
-                permiss: '2',
-            },
-            {
-                index: '/import',
-                title: '导入Excel',
-                permiss: '2',
-            },
-            {
-                index: '/export',
-                title: '导出Excel',
-                permiss: '2',
-            },
-        ],
+    },
+     {
+        icon: 'DocumentCopy',
+        index: '/admin',
+        title: '用户管理',
+        permiss: '3',
     },
     // {
     //     icon: 'DocumentCopy',
@@ -95,54 +128,54 @@ const items = [
     //     title: 'tab选项卡',
     //     permiss: '3',
     // },
-    {
-        icon: 'Edit',
-        index: '3',
-        title: '表单相关',
-        permiss: '4',
-        subs: [
-            {
-                index: '/form',
-                title: '基本表单',
-                permiss: '5',
-            },
-            {
-                index: '/upload',
-                title: '文件上传',
-                permiss: '6',
-            },
-            {
-                index: '4',
-                title: '三级菜单',
-                permiss: '7',
-                subs: [
-                    {
-                        index: '/editor',
-                        title: '富文本编辑器',
-                        permiss: '8',
-                    },
-                    {
-                        index: '/markdown',
-                        title: 'markdown编辑器',
-                        permiss: '9',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        icon: 'Setting',
-        index: '/icon',
-        title: '自定义图标',
-        permiss: '10',
-    },
+    // {
+    //     icon: 'Edit',
+    //     index: '3',
+    //     title: '表单相关',
+    //     permiss: '4',
+    //     subs: [
+    //         {
+    //             index: '/form',
+    //             title: '基本表单',
+    //             permiss: '5',
+    //         },
+    //         {
+    //             index: '/upload',
+    //             title: '文件上传',
+    //             permiss: '6',
+    //         },
+    //         {
+    //             index: '4',
+    //             title: '三级菜单',
+    //             permiss: '7',
+    //             subs: [
+    //                 {
+    //                     index: '/editor',
+    //                     title: '富文本编辑器',
+    //                     permiss: '8',
+    //                 },
+    //                 {
+    //                     index: '/markdown',
+    //                     title: 'markdown编辑器',
+    //                     permiss: '9',
+    //                 },
+    //             ],
+    //         },
+    //     ],
+    // },
+    // {
+    //     icon: 'Setting',
+    //     index: '/icon',
+    //     title: '自定义图标',
+    //     permiss: '10',
+    // },
 
-    {
-        icon: 'Warning',
-        index: '/permission',
-        title: '权限管理',
-        permiss: '13',
-    },
+    // {
+    //     icon: 'Warning',
+    //     index: '/permission',
+    //     title: '权限管理',
+    //     permiss: '13',
+    // },
 
 ];
 

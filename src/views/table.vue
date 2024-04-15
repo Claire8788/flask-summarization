@@ -53,11 +53,18 @@
             >
               编辑
             </el-button>
-            <el-button
+            <!-- <el-button
               type="danger"
               size="small"
               :icon="Delete"
               @click="handleDelete(scope.$index)"
+              v-permiss="16"
+            > -->
+            <el-button
+              type="danger"
+              size="small"
+              :icon="Delete"
+              @click="handleDelete(scope.row.id)"
               v-permiss="16"
             >
               删除
@@ -100,6 +107,7 @@ import { ref, reactive, onMounted ,computed} from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { Delete, Edit, Search, CirclePlusFilled, View } from '@element-plus/icons-vue';
 import { fetchData } from '../api/index'; // 导入发送请求的函数
+import { deleteData } from '../api/index'; // 导入发送请求的函数
 import TableEdit from '../components/table-edit.vue';
 import TableDetail from '../components/table-detail.vue';
 
@@ -119,6 +127,7 @@ const query = reactive({
 	created_at: '',
 	// pageIndex: 1,
 	// pageSize: 10
+  username: localStorage.getItem('ms_username')
 });
 // const tableData = ref<TableItem[]>([]);
 const tableData = ref<TableItem[]>([]);
@@ -160,18 +169,20 @@ const handleSearch = async () => {
 // 	getData();
 // };
 
-// 删除操作
-const handleDelete = (index: number) => {
-	// 二次确认删除
-	ElMessageBox.confirm('确定要删除吗？', '提示', {
-		type: 'warning'
-	})
-		.then(() => {
-			ElMessage.success('删除成功');
-			tableData.value.splice(index, 1);
-		})
-		.catch(() => {});
+const handleDelete = async (id) => {
+  try {
+    await deleteData({ id }); // 发送请求删除对应 ID 的数据
+    const index = tableData.value.findIndex(item => item.id === id); // 找到要删除的行在表格数据中的索引
+    if (index !== -1) {
+      tableData.value.splice(index, 1); // 删除表格中对应的行
+    }
+    ElMessage.success('删除成功');
+  } catch (error) {
+    console.error('删除数据失败：', error);
+    ElMessage.error('删除数据失败，请稍后重试');
+  }
 };
+
 
 const visible = ref(false);
 let idx: number = -1;

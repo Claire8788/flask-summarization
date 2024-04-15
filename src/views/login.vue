@@ -158,7 +158,7 @@ tags.clearTags();
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-image: url(../assets/img/login-bg.jpg);
+    background-image: url(../assets/img/image.jpg);
     background-size: 100%;
 }
 .ms-title {

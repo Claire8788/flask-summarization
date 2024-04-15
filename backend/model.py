@@ -8,6 +8,7 @@ class Admin(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     # updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    status = db.Column(db.Integer, default=1)  # 添加 status 字段，默认为 1
 
 # 创建用户摘要模型
 class UserSummary(db.Model):
@@ -20,3 +21,4 @@ class UserSummary(db.Model):
     model = db.Column(db.String(64))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     # updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    status = db.Column(db.Integer, default=1)  # 添加 status 字段，默认为 1

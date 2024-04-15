@@ -30,10 +30,12 @@
 					<el-form label-width="90px">
 						<el-form-item label="用户名："> {{ name }} </el-form-item>
 						<el-form-item label="旧密码：">
-							<el-input type="password" v-model="form.old"></el-input>
+							<!-- <el-input type="password" v-model="form.old"></el-input> -->
+							<el-input v-model="form.old"></el-input>
 						</el-form-item>
 						<el-form-item label="新密码：">
-							<el-input type="password" v-model="form.new"></el-input>
+							<!-- <el-input type="password" v-model="form.new"></el-input> -->
+							<el-input  v-model="form.new"></el-input>
 						</el-form-item>
 						<el-form-item label="个人简介：">
 							<el-input v-model="form.desc"></el-input>
@@ -80,8 +82,33 @@ const form = reactive({
 	new: '',
 	desc: '不可能！我的代码怎么可能会有bug！'
 });
-const onSubmit = () => {};
-
+// const onSubmit = () => {};
+const onSubmit = async () => {
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/updatePassword', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: name,
+        oldPassword: form.old,
+        newPassword: form.new
+      })
+    });
+    const data = await response.json();
+    if (response.ok) {
+      // 更新密码成功
+      alert(data.message);
+    } else {
+      // 更新密码失败
+      alert(data.message);
+    }
+  } catch (error) {
+    console.error('更新密码失败：', error);
+    alert('更新密码失败，请稍后重试');
+  }
+};
 const avatarImg = ref(avatar);
 const imgSrc = ref('');
 const cropImg = ref('');

@@ -56,8 +56,22 @@ const data: Tree[] = [
 	},
 	{
 		id: '3',
-		label: 'tab选项卡'
+		label: '用户管理',
+		children: [
+			{
+				id: '17',
+				label: '编辑'
+			},
+			{
+				id: '16',
+				label: '删除'
+			}
+		]
 	},
+	// {
+	// 	id: '3',
+	// 	label: 'tab选项卡'
+	// },
 	{
 		id: '4',
 		label: '表单相关',
